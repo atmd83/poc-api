@@ -43,7 +43,6 @@ export class UserDto {
 }
 
 export class UserUpdateDto {
-  @IsEmail()
   @ApiProperty({
     description: 'The users email',
     example: 'test@testmail.com',

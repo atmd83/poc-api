@@ -21,12 +21,12 @@ async function bootstrap() {
       secret: 'secret',
       resave: true,
       saveUninitialized: true,
-      cookie: { secure: false, sameSite: true },
+      cookie: { secure: false, sameSite: false },
     }),
   );
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://tixtix.net'],
     credentials: true,
   });
 

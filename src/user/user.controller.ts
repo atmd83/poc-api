@@ -25,6 +25,7 @@ export class UserController {
     description: 'Endpoint return the users profile data',
   })
   async getUser(@Req() request: any) {
+    console.log('GET', request.session.siwe);
     if (!request.session.siwe) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
@@ -59,6 +60,7 @@ export class UserController {
   })
   async generateNonce(@Req() request: any) {
     request.session.nonce = generateNonce();
+    console.log('nonce', request.session.nonce);
     await request.session.save();
     return request.session.nonce;
   }
@@ -72,7 +74,10 @@ export class UserController {
     const { signature } = body;
     const msg = body.message;
 
+    console.log('verify', msg, signature);
+
     try {
+      console.log('TRY', msg);
       const siwe = new SiweMessage(msg);
 
       const { data: message } = await siwe.verify({
@@ -81,6 +86,7 @@ export class UserController {
       });
 
       request.session.siwe = message;
+      console.log('SAVE', request.session.siwe);
       request.session.cookie.expires = new Date(message.expirationTime);
       await request.session.save();
 
